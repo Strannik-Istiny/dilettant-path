@@ -1,0 +1,367 @@
+// ==========================================
+// custom.scss — Пастельная палитра "Времена года"
+// Сезон = 40 секунд, переход = 10 секунд
+// Полный цикл = 200 секунд (3 мин 20 сек)
+// ==========================================
+
+// 1. РЕГИСТРАЦИЯ ПЕРЕМЕННЫХ ДЛЯ ПЛАВНОЙ АНИМАЦИИ
+@property --bg-light {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f5f9f0;
+}
+@property --bg-medium {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e8f0dc;
+}
+@property --primary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #6a9c78;
+}
+@property --secondary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d4e8d4;
+}
+@property --tertiary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f0e6d3;
+}
+@property --links {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3d7a5a;
+}
+
+// 2. БАЗОВЫЕ СТИЛИ
+:root {
+  --dark: #1a1a1a;
+  --darkgray: #555555;
+}
+
+body {
+  background-color: var(--bg-light);
+  color: var(--dark);
+  transition: 
+    background-color 2.5s ease,
+    color 2.5s ease;
+}
+
+article {
+  background-color: var(--bg-light);
+  color: var(--dark);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: 
+    background-color 2.5s ease,
+    box-shadow 2.5s ease,
+    color 2.5s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--dark);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: color 2.5s ease;
+}
+
+a {
+  color: var(--links);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: 
+    color 0.4s ease,
+    border-bottom-color 0.4s ease;
+}
+
+a:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+  transition: outline-color 2.5s ease;
+}
+
+// 3. ГРАФ ЗНАНИЙ
+.graph .node {
+  fill: var(--primary);
+  stroke: var(--bg-light);
+  stroke-width: 2px;
+  transition: fill 2.5s ease, stroke 2.5s ease;
+}
+
+.graph .link {
+  stroke: var(--tertiary);
+  stroke-opacity: 0.5;
+  transition: stroke 2.5s ease;
+}
+
+.graph .node.active {
+  fill: var(--links);
+}
+
+// 4. ИНДИКАТОР СЕЗОНА
+.season-indicator {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  font-size: 0.75rem;
+  opacity: 0.25;
+  color: var(--darkgray);
+  pointer-events: none;
+  transition: 
+    opacity 0.8s ease,
+    color 2.5s ease;
+  z-index: 1000;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.04em;
+  background: var(--bg-light);
+  padding: 6px 14px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.season-indicator:hover {
+  opacity: 0.8;
+}
+
+// 5. ОСНОВНАЯ АНИМАЦИЯ
+// 200 секунд = 3 мин 20 сек на полный цикл
+// Каждый сезон: 40 сек (чистый) + 10 сек (переход)
+// Итого: 50 сек на сезон
+
+body {
+  animation: seasonalShift 200s infinite linear;
+}
+
+@keyframes seasonalShift {
+  // ===== ВЕСНА =====
+  // Чистая весна (0% - 20%) = 40 секунд
+  0%, 20% {
+    --bg-light: #f5f9f0;
+    --bg-medium: #e8f0dc;
+    --primary: #6a9c78;
+    --secondary: #d4e8d4;
+    --tertiary: #f0e6d3;
+    --links: #3d7a5a;
+  }
+  // Переход Весна → Лето (20% - 25%) = 10 секунд
+  20.01%, 25% {
+    --bg-light: #faf8f0;
+    --bg-medium: #efeade;
+    --primary: #8ab07a;
+    --secondary: #dce8d4;
+    --tertiary: #f0e6d8;
+    --links: #6a8a5a;
+  }
+  
+  // ===== ЛЕТО =====
+  // Чистое лето (25% - 45%) = 40 секунд
+  25.01%, 45% {
+    --bg-light: #fef9f0;
+    --bg-medium: #f5ede0;
+    --primary: #c9a87c;
+    --secondary: #f0e4d4;
+    --tertiary: #d4c8b8;
+    --links: #b8834a;
+  }
+  // Переход Лето → Осень (45% - 50%) = 10 секунд
+  45.01%, 50% {
+    --bg-light: #faf4ec;
+    --bg-medium: #f0e8dc;
+    --primary: #c0986a;
+    --secondary: #ece0d0;
+    --tertiary: #d0c4b8;
+    --links: #a0784a;
+  }
+  
+  // ===== ОСЕНЬ =====
+  // Чистая осень (50% - 70%) = 40 секунд
+  50.01%, 70% {
+    --bg-light: #f5efe8;
+    --bg-medium: #ece0d4;
+    --primary: #b8835a;
+    --secondary: #e8d4c4;
+    --tertiary: #c8b8a8;
+    --links: #8a6a4a;
+  }
+  // Переход Осень → Зима (70% - 75%) = 10 секунд
+  70.01%, 75% {
+    --bg-light: #f2f0ec;
+    --bg-medium: #e6e4dc;
+    --primary: #a08a70;
+    --secondary: #e0d4c8;
+    --tertiary: #c8bcaa;
+    --links: #6a7a5a;
+  }
+  
+  // ===== ЗИМА =====
+  // Чистая зима (75% - 95%) = 40 секунд
+  75.01%, 95% {
+    --bg-light: #f0f4f8;
+    --bg-medium: #e0e8f0;
+    --primary: #7a9cb8;
+    --secondary: #d4e0e8;
+    --tertiary: #c8d0d8;
+    --links: #4a7a9a;
+  }
+  // Переход Зима → Весна (95% - 100%) = 10 секунд
+  95.01%, 100% {
+    --bg-light: #f2f6f4;
+    --bg-medium: #e4ece4;
+    --primary: #7aaa8a;
+    --secondary: #d4e4d8;
+    --tertiary: #e0dcd0;
+    --links: #5a8a6a;
+  }
+}
+
+// 6. ТЁМНАЯ ТЕМА
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dark: #f0f0f0;
+    --darkgray: #b0b0b0;
+  }
+
+  body {
+    animation: seasonalShiftDark 200s infinite linear;
+  }
+
+  @keyframes seasonalShiftDark {
+    // ===== ВЕСНА (тёмная) =====
+    0%, 20% {
+      --bg-light: #1a1f1a;
+      --bg-medium: #2a302a;
+      --primary: #7ab892;
+      --secondary: #2a4030;
+      --tertiary: #3a3a2a;
+      --links: #8ac8a2;
+    }
+    20.01%, 25% {
+      --bg-light: #1e221e;
+      --bg-medium: #2e342e;
+      --primary: #8ac09a;
+      --secondary: #304434;
+      --tertiary: #3e3e2e;
+      --links: #92caaa;
+    }
+    
+    // ===== ЛЕТО (тёмная) =====
+    25.01%, 45% {
+      --bg-light: #1f1a1a;
+      --bg-medium: #302a2a;
+      --primary: #d4b88a;
+      --secondary: #403a2a;
+      --tertiary: #3a3030;
+      --links: #e4c8a2;
+    }
+    45.01%, 50% {
+      --bg-light: #221e1c;
+      --bg-medium: #342e2a;
+      --primary: #d0b080;
+      --secondary: #443e2e;
+      --tertiary: #3e3434;
+      --links: #dcc09a;
+    }
+    
+    // ===== ОСЕНЬ (тёмная) =====
+    50.01%, 70% {
+      --bg-light: #1f1a18;
+      --bg-medium: #302a24;
+      --primary: #c89870;
+      --secondary: #40342a;
+      --tertiary: #3a3028;
+      --links: #d8a880;
+    }
+    70.01%, 75% {
+      --bg-light: #201e1c;
+      --bg-medium: #322e2a;
+      --primary: #b09070;
+      --secondary: #443a30;
+      --tertiary: #3e342e;
+      --links: #c8a080;
+    }
+    
+    // ===== ЗИМА (тёмная) =====
+    75.01%, 95% {
+      --bg-light: #181a1f;
+      --bg-medium: #242a30;
+      --primary: #8ab0c8;
+      --secondary: #2a3840;
+      --tertiary: #283038;
+      --links: #a2c8d8;
+    }
+    95.01%, 100% {
+      --bg-light: #1a1e22;
+      --bg-medium: #282e32;
+      --primary: #8ab8c8;
+      --secondary: #2e3c42;
+      --tertiary: #2c343a;
+      --links: #aacada;
+    }
+  }
+
+  .season-indicator {
+    background: var(--bg-light);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+// 7. ДОПОЛНИТЕЛЬНАЯ ПЛАВНОСТЬ
+article {
+  transition: 
+    background-color 2.5s ease,
+    box-shadow 2.5s ease,
+    color 2.5s ease,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+// 8. "ДЫХАНИЕ" ФОНА
+@keyframes breathe {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.97;
+  }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at 30% 40%,
+    var(--bg-medium) 0%,
+    transparent 70%
+  );
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+  animation: breathe 6s ease-in-out infinite;
+  transition: background 2.5s ease;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
